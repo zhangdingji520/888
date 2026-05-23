@@ -17,7 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { FlightSearchInput, FlightSearchInputFlightClass } from "@workspace/api-client-react";
+import type {
+  FlightSearchInput,
+  FlightSearchInputFlightClass,
+} from "@workspace/api-client-react";
+import type { Airport } from "@workspace/api-client-react";
 
 export type TripType = "oneway" | "roundtrip";
 
@@ -32,45 +36,75 @@ interface SearchFormProps {
   isLoading?: boolean;
 }
 
+// Chinese single-character weekday labels: Sun Mon Tue Wed Thu Fri Sat
+const CN_WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
+
 export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   const [tripType, setTripType] = useState<TripType>("oneway");
-  const [origin, setOrigin] = useState("");
-  const [destination, setDestination] = useState("");
+
+  // Keep full Airport objects so the swap button can correctly update both displays
+  const [originAirport, setOriginAirport] = useState<Airport | null>(null);
+  const [destinationAirport, setDestinationAirport] = useState<Airport | null>(null);
+
   const [departDate, setDepartDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
   const [adults, setAdults] = useState("1");
-  const [flightClass, setFlightClass] = useState<FlightSearchInputFlightClass>("Econom");
+  const [flightClass, setFlightClass] =
+    useState<FlightSearchInputFlightClass>("Econom");
 
   const handleSwap = () => {
-    setOrigin(destination);
-    setDestination(origin);
+    setOriginAirport(destinationAirport);
+    setDestinationAirport(originAirport);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!origin || !destination || !departDate) return;
+    if (!originAirport || !destinationAirport || !departDate) return;
     if (tripType === "roundtrip" && !returnDate) return;
 
-    const base = { origin, destination, adults: parseInt(adults, 10), flightClass };
+    const base = {
+      origin: originAirport.iata,
+      destination: destinationAirport.iata,
+      adults: parseInt(adults, 10),
+      flightClass,
+    };
 
     onSearch({
       tripType,
       outbound: { ...base, date: format(departDate, "dd.MM.yyyy") },
       returnFlight:
         tripType === "roundtrip" && returnDate
-          ? { ...base, origin: destination, destination: origin, date: format(returnDate, "dd.MM.yyyy") }
+          ? {
+              ...base,
+              origin: destinationAirport.iata,
+              destination: originAirport.iata,
+              date: format(returnDate, "dd.MM.yyyy"),
+            }
           : undefined,
     });
   };
 
-  const isComplete = origin && destination && departDate && (tripType === "oneway" || returnDate);
+  const isComplete =
+    originAirport &&
+    destinationAirport &&
+    departDate &&
+    (tripType === "oneway" || returnDate);
 
-  const classLabel = flightClass === "Econom" ? "经济舱" : flightClass === "Business" ? "商务舱" : "头等舱";
+  const classLabel =
+    flightClass === "Econom"
+      ? "经济舱"
+      : flightClass === "Business"
+        ? "商务舱"
+        : "头等舱";
+
+  // Chinese weekday formatter for the calendar
+  const calendarFormatters = {
+    formatWeekdayName: (date: Date) => CN_WEEKDAYS[date.getDay()],
+  };
 
   return (
     <div className="w-full max-w-5xl mx-auto -mt-16 sm:-mt-24 relative z-10 px-4 sm:px-6">
       <div className="bg-card rounded-2xl shadow-xl border overflow-hidden">
-
         {/* 单程 / 往返 tabs */}
         <div className="flex border-b">
           <button
@@ -100,17 +134,17 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 sm:p-6 flex flex-col gap-4">
-
           {/* Row 1: Origin ↔ Destination */}
           <div className="flex items-end gap-2">
             <LocationInput
               label="出发地"
               placeholder="出发城市或机场"
-              value={origin}
-              onChange={setOrigin}
+              value={originAirport?.iata ?? ""}
+              airport={originAirport}
+              onChange={(_iata, airport) => setOriginAirport(airport)}
             />
             <div className="flex flex-col pb-px">
-              <div className="h-5" /> {/* spacer to align with labelled inputs */}
+              <div className="h-5" />
               <Button
                 type="button"
                 variant="outline"
@@ -124,16 +158,21 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
             <LocationInput
               label="目的地"
               placeholder="到达城市或机场"
-              value={destination}
-              onChange={setDestination}
+              value={destinationAirport?.iata ?? ""}
+              airport={destinationAirport}
+              onChange={(_iata, airport) => setDestinationAirport(airport)}
             />
           </div>
 
           {/* Row 2: Dates + Passengers */}
-          <div className={cn(
-            "grid gap-4",
-            tripType === "roundtrip" ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"
-          )}>
+          <div
+            className={cn(
+              "grid gap-4",
+              tripType === "roundtrip"
+                ? "grid-cols-1 sm:grid-cols-3"
+                : "grid-cols-1 sm:grid-cols-2"
+            )}
+          >
             {/* Departure date */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -151,7 +190,9 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                   >
                     <CalendarIcon className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
                     <span className="truncate">
-                      {departDate ? format(departDate, "yyyy年M月d日") : "选择日期"}
+                      {departDate
+                        ? format(departDate, "yyyy年M月d日")
+                        : "选择日期"}
                     </span>
                   </Button>
                 </PopoverTrigger>
@@ -161,16 +202,21 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                     selected={departDate}
                     onSelect={(d) => {
                       setDepartDate(d);
-                      if (returnDate && d && d >= returnDate) setReturnDate(undefined);
+                      if (returnDate && d && d >= returnDate)
+                        setReturnDate(undefined);
                     }}
                     initialFocus
-                    disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                    disabled={(d) =>
+                      d < new Date(new Date().setHours(0, 0, 0, 0))
+                    }
+                    formatters={calendarFormatters}
+                    className="[--cell-size:2.75rem] text-base"
                   />
                 </PopoverContent>
               </Popover>
             </div>
 
-            {/* Return date — only in round-trip mode */}
+            {/* Return date */}
             {tripType === "roundtrip" && (
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -188,7 +234,9 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                     >
                       <CalendarIcon className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
                       <span className="truncate">
-                        {returnDate ? format(returnDate, "yyyy年M月d日") : "选择日期"}
+                        {returnDate
+                          ? format(returnDate, "yyyy年M月d日")
+                          : "选择日期"}
                       </span>
                     </Button>
                   </PopoverTrigger>
@@ -202,6 +250,8 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                         d < new Date(new Date().setHours(0, 0, 0, 0)) ||
                         (!!departDate && d <= departDate)
                       }
+                      formatters={calendarFormatters}
+                      className="[--cell-size:2.75rem] text-base"
                     />
                   </PopoverContent>
                 </Popover>
@@ -239,7 +289,9 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                         </SelectTrigger>
                         <SelectContent>
                           {[1, 2, 3, 4, 5, 6].map((num) => (
-                            <SelectItem key={num} value={num.toString()}>{num} 位</SelectItem>
+                            <SelectItem key={num} value={num.toString()}>
+                              {num} 位
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -249,7 +301,12 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
 
                     <div className="flex items-center justify-between">
                       <p className="font-medium text-sm">舱位</p>
-                      <Select value={flightClass} onValueChange={(val: FlightSearchInputFlightClass) => setFlightClass(val)}>
+                      <Select
+                        value={flightClass}
+                        onValueChange={(val: FlightSearchInputFlightClass) =>
+                          setFlightClass(val)
+                        }
+                      >
                         <SelectTrigger className="w-28">
                           <SelectValue />
                         </SelectTrigger>
