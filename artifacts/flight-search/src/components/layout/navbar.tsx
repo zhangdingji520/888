@@ -10,12 +10,12 @@ export function Navbar() {
           <span className="text-xl font-bold tracking-tight">SkySearch</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-          <Link href="/" className="hover:text-foreground transition-colors">Book Flights</Link>
-          <button className="hover:text-foreground transition-colors cursor-not-allowed opacity-50">Manage Trips</button>
-          <button className="hover:text-foreground transition-colors cursor-not-allowed opacity-50">Check-in</button>
+          <Link href="/" className="hover:text-foreground transition-colors">搜索航班</Link>
+          <button className="hover:text-foreground transition-colors cursor-not-allowed opacity-50">我的行程</button>
+          <button className="hover:text-foreground transition-colors cursor-not-allowed opacity-50">在线值机</button>
         </nav>
         <div className="flex items-center gap-4">
-          <button className="text-sm font-medium hover:text-primary transition-colors cursor-not-allowed opacity-50">Sign In</button>
+          <button className="text-sm font-medium hover:text-primary transition-colors cursor-not-allowed opacity-50">登录</button>
         </div>
       </div>
     </header>

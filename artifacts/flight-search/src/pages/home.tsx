@@ -33,11 +33,11 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col">
         {/* Hero Section */}
-        <section className="relative w-full h-[400px] md:h-[500px] bg-muted overflow-hidden">
+        <section className="relative w-full h-[400px] md:h-[480px] bg-muted overflow-hidden">
           <div className="absolute inset-0">
             <img
               src="/hero.png"
-              alt="SkySearch Hero"
+              alt="SkySearch"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
@@ -45,10 +45,10 @@ export default function Home() {
 
           <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center -mt-10">
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">
-              Your Journey Begins Here
+              开启您的旅程
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl font-medium">
-              Discover effortless flight booking. Fast, transparent, and designed for you.
+              快速搜索全国及国际航班，透明比价，轻松出行
             </p>
           </div>
         </section>
@@ -71,10 +71,10 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="border-t bg-card py-12 mt-auto">
+      <footer className="border-t bg-card py-10 mt-auto">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-xl font-bold text-primary mb-2">SkySearch</p>
-          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} SkySearch. All rights reserved.</p>
+          <p className="text-xl font-bold text-primary mb-1">SkySearch</p>
+          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} SkySearch 版权所有</p>
         </div>
       </footer>
     </div>
