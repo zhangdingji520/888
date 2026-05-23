@@ -142,6 +142,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
+                    type="button"
                     variant="outline"
                     className={cn(
                       "w-full h-14 justify-start text-left font-normal bg-background/50 hover:bg-background shadow-none text-base",
@@ -178,6 +179,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
+                      type="button"
                       variant="outline"
                       className={cn(
                         "w-full h-14 justify-start text-left font-normal bg-background/50 hover:bg-background shadow-none text-base",
@@ -214,6 +216,7 @@ export function SearchForm({ onSearch, isLoading }: SearchFormProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
+                    type="button"
                     variant="outline"
                     className="w-full h-14 justify-start text-left font-normal bg-background/50 hover:bg-background shadow-none text-base"
                   >
