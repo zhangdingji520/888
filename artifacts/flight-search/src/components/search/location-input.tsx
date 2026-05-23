@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useGetPopularAirports, useSearchAirports, getSearchAirportsQueryKey } from "@workspace/api-client-react";
-import type { Airport } from "@workspace/api-client-react/src/generated/api.schemas";
+import type { Airport } from "@workspace/api-client-react";
 
 interface LocationInputProps {
   value: string;
