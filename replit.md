@@ -1,45 +1,63 @@
-# [Project name]
+# SkySearch — 机票搜索网站
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A full-stack flight search website that queries real-time flight prices from the city.travel SOAP API.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the API server
+- `pnpm --filter @workspace/flight-search run dev` — run the frontend (requires PORT + BASE_PATH env vars, handled by Replit workflows)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- No database required — all data comes from the city.travel SOAP API
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: React 19 + Vite + Tailwind CSS + shadcn/ui
 - API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Validation: Zod (`zod/v4`) + Orval codegen
+- External data: city.travel SOAP API (AeroSearch)
+- Build: esbuild (API), Vite (frontend)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `lib/api-spec/openapi.yaml` — API contract (source of truth)
+- `lib/api-client-react/` — generated React Query hooks
+- `lib/api-zod/` — generated Zod validation schemas
+- `artifacts/flight-search/` — React + Vite frontend
+- `artifacts/api-server/src/routes/flights.ts` — SOAP proxy route
+- `artifacts/api-server/src/routes/airports.ts` — static airport database (50+ airports)
+- `api/index.ts` — Vercel serverless function wrapper
+- `vercel.json` — Vercel deployment configuration
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The backend proxies SOAP requests to `https://apisrv.city.travel/SiteCity` — the API requires no database
+- XML namespace prefixes (`a:`, `b:`, `s:`) are stripped using `removeNSPrefix: true` in fast-xml-parser
+- The real SOAP response structure: `FlightData.FlightData[]` → each item has `Offers.OfferInfo` → `Segments.OfferSegment`
+- Currency is CNY; User-Agent must match the real app to avoid being blocked
+- Vercel deployment: frontend as static site, backend as a Node.js serverless function at `/api`
 
-## Product
+## Deploying to Vercel via GitHub
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+1. Push this repo to GitHub
+2. Go to [vercel.com](https://vercel.com) → New Project → Import Git Repository
+3. Vercel will auto-detect `vercel.json` — no extra config needed
+4. Click Deploy
 
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
+The `vercel.json` at the repo root handles everything:
+- Builds the Vite frontend → serves as static files
+- Routes `/api/*` to the Express serverless function in `api/index.ts`
+- Handles SPA routing (all other paths → `index.html`)
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The SOAP request must use `Currency: CNY` and the real app's User-Agent or the server may reject it
+- `fast-xml-parser` with `removeNSPrefix: true` is required — without it, all field names have namespace prefixes and are inaccessible
+- The real response path is `result.FlightData.FlightData[]` (double-nested), NOT `result.FlightData[]`
+- `PORT` is not required during `vite build` — the config guards it with `isBuild` check
 
-## Pointers
+## User preferences
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Wants to deploy to Vercel via GitHub
+- Prefers Chinese (CNY) currency for flight prices
