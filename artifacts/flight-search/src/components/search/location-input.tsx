@@ -14,22 +14,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useGetPopularAirports, useSearchAirports, getSearchAirportsQueryKey } from "@workspace/api-client-react";
+import {
+  useGetPopularAirports,
+  useSearchAirports,
+  getSearchAirportsQueryKey,
+} from "@workspace/api-client-react";
 import type { Airport } from "@workspace/api-client-react";
 
 interface LocationInputProps {
   value: string;
-  onChange: (value: string) => void;
+  onChange: (iata: string, airport: Airport) => void;
+  airport?: Airport | null; // controlled display value from parent
   placeholder?: string;
   label?: string;
 }
 
-export function LocationInput({ value, onChange, placeholder = "选择城市或机场", label }: LocationInputProps) {
+export function LocationInput({
+  value,
+  onChange,
+  airport: airportProp,
+  placeholder = "选择城市或机场",
+  label,
+}: LocationInputProps) {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  // Keep the last selected airport so display doesn't break when searchResults clear
-  const [selectedAirport, setSelectedAirport] = useState<Airport | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
@@ -37,29 +46,30 @@ export function LocationInput({ value, onChange, placeholder = "选择城市或�
   }, [searchQuery]);
 
   const { data: popularAirports = [] } = useGetPopularAirports();
-  const { data: searchResults = [], isLoading: isLoadingSearch } = useSearchAirports(
-    { q: debouncedQuery },
-    { query: { enabled: debouncedQuery.length > 1, queryKey: getSearchAirportsQueryKey({ q: debouncedQuery }) } }
-  );
-
-  // Sync selectedAirport when value changes externally (e.g. swap button)
-  useEffect(() => {
-    if (!value) {
-      setSelectedAirport(null);
-      return;
-    }
-    const found = [...popularAirports, ...searchResults].find((a) => a.iata === value);
-    if (found) setSelectedAirport(found);
-  }, [value, popularAirports, searchResults]);
+  const { data: searchResults = [], isLoading: isLoadingSearch } =
+    useSearchAirports(
+      { q: debouncedQuery },
+      {
+        query: {
+          enabled: debouncedQuery.length > 1,
+          queryKey: getSearchAirportsQueryKey({ q: debouncedQuery }),
+        },
+      }
+    );
 
   const displayAirports = debouncedQuery.length > 1 ? searchResults : popularAirports;
 
   const handleSelect = (airport: Airport) => {
-    setSelectedAirport(airport);
-    onChange(airport.iata);
+    onChange(airport.iata, airport);
     setOpen(false);
     setSearchQuery("");
   };
+
+  // Use the controlled prop if provided, otherwise fall back to finding it in known lists
+  const displayAirport =
+    airportProp ??
+    [...popularAirports, ...searchResults].find((a) => a.iata === value) ??
+    null;
 
   return (
     <div className="flex flex-col gap-1.5 flex-1 min-w-0">
@@ -68,9 +78,16 @@ export function LocationInput({ value, onChange, placeholder = "选择城市或�
           {label}
         </label>
       )}
-      <Popover open={open} onOpenChange={(o) => { setOpen(o); if (!o) setSearchQuery(""); }}>
+      <Popover
+        open={open}
+        onOpenChange={(o) => {
+          setOpen(o);
+          if (!o) setSearchQuery("");
+        }}
+      >
         <PopoverTrigger asChild>
           <Button
+            type="button"
             variant="outline"
             role="combobox"
             aria-expanded={open}
@@ -81,10 +98,14 @@ export function LocationInput({ value, onChange, placeholder = "选择城市或�
           >
             <MapPin className="h-5 w-5 text-muted-foreground shrink-0 mr-3" />
             <span className="truncate">
-              {selectedAirport ? (
+              {displayAirport ? (
                 <span className="flex items-center gap-2">
-                  <span className="font-semibold text-foreground">{selectedAirport.city}</span>
-                  <span className="text-muted-foreground text-sm">({selectedAirport.iata})</span>
+                  <span className="font-semibold text-foreground">
+                    {displayAirport.city}
+                  </span>
+                  <span className="text-muted-foreground text-sm">
+                    ({displayAirport.iata})
+                  </span>
                 </span>
               ) : (
                 placeholder
@@ -108,7 +129,9 @@ export function LocationInput({ value, onChange, placeholder = "选择城市或�
               <CommandEmpty>
                 {isLoadingSearch ? "搜索中..." : "未找到机场"}
               </CommandEmpty>
-              <CommandGroup heading={debouncedQuery.length > 1 ? "搜索结果" : "热门目的地"}>
+              <CommandGroup
+                heading={debouncedQuery.length > 1 ? "搜索结果" : "热门目的地"}
+              >
                 {displayAirports.map((airport: Airport) => (
                   <CommandItem
                     key={airport.iata}
@@ -117,8 +140,12 @@ export function LocationInput({ value, onChange, placeholder = "选择城市或�
                     className="flex items-center justify-between gap-2 p-3 cursor-pointer"
                   >
                     <div className="flex flex-col">
-                      <span className="font-medium">{airport.city} ({airport.iata})</span>
-                      <span className="text-xs text-muted-foreground">{airport.name}, {airport.country}</span>
+                      <span className="font-medium">
+                        {airport.city} ({airport.iata})
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {airport.name}, {airport.country}
+                      </span>
                     </div>
                     <Check
                       className={cn(
