@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "OJNr5coE0Y6hzW4rfpYSi"
+uri = "file://artifacts/flight-search-mobile/assets/images/icon.png"
+type = "image"
+title = "skysearch flight app icon"
