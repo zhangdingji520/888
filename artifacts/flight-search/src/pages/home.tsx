@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Navbar } from "@/components/layout/navbar";
 import { SearchForm, type SearchFormData } from "@/components/search/search-form";
 import { ResultsList } from "@/components/results/results-list";
 import { useSearchFlights } from "@workspace/api-client-react";
