@@ -1,0 +1,40 @@
+name: Auto Unzip File
+
+on:
+  push:
+    paths:
+      - '**.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unzip and Commit
+        run: |
+          # 找到 zip 文件
+          ZIPFILE=$(find . -maxdepth 1 -name "*.zip" | head -1)
+          FILENAME=$(basename "$ZIPFILE" .zip)
+
+          # 解压到临时目录
+          mkdir -p /tmp/unzipped
+          unzip -o "$ZIPFILE" -d /tmp/unzipped
+
+          # 如果解压出来是单个子文件夹，把内容移到根目录
+          CONTENTS=$(ls /tmp/unzipped)
+          COUNT=$(echo "$CONTENTS" | wc -l)
+          if [ "$COUNT" -eq 1 ] && [ -d "/tmp/unzipped/$CONTENTS" ]; then
+            cp -r /tmp/unzipped/$CONTENTS/. .
+          else
+            cp -r /tmp/unzipped/. .
+          fi
+
+          # 删除 zip 文件
+          rm "$ZIPFILE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Auto unzip $FILENAME" || echo "Nothing to commit"
+          git push
