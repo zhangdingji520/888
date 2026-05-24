@@ -356,6 +356,14 @@ export default function ResultsScreen() {
                 flightClass: params.flightClass as "Econom" | "Business" | "First" | undefined,
               };
               outbound.mutate(base);
+              if (params.tripType === "roundtrip" && params.returnDate) {
+                returnFlight.mutate({
+                  ...base,
+                  origin: params.destination,
+                  destination: params.origin,
+                  date: params.returnDate,
+                });
+              }
             }}
           >
             <Text style={s.retryText}>重试</Text>
