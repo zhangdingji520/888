@@ -1,0 +1,50 @@
+Request
+POST https://apisrv.city.travel/SiteCity HTTP/1.1
+Host: apisrv.city.travel
+Content-Type: application/soap+xml; charset=utf-8; action="http://tempuri.org/ISiteAvia/AeroBook"
+Connection: keep-alive
+Accept: */*
+User-Agent: CityTravel/20220505124464 CFNetwork/3826.600.41.2.1 Darwin/24.6.0
+Content-Length: 2112
+Accept-Language: zh-CN,zh-Hans;q=0.9
+Accept-Encoding: gzip, deflate, br
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+                   xmlns:ns1="http://schemas.datacontract.org/2004/07/SiteCity.Common"
+                   xmlns:ns2="http://tempuri.org/"
+                   xmlns:ns3="http://schemas.datacontract.org/2004/07/SiteCity.Avia.Booking"
+                   xmlns:ns4="http://schemas.datacontract.org/2004/07/SiteCity.Avia.Common.Avia"
+                   xmlns:ns5="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <SOAP-ENV:Body>
+        <ns2:AeroBook>
+            <ns2:credentials><ns1:ApiLogin>mobile</ns1:ApiLogin><ns1:ApiPassword>qwegerf4vr3</ns1:ApiPassword><ns1:Currency>CNY</ns1:Currency><ns1:DeviceId>BE210D6C-9076-4C6C-BFB7-AE56E4F1E6E6</ns1:DeviceId><ns1:Language>EN</ns1:Language><ns1:TokenGuid>243fd3fa-e47d-4afe-bb76-6fddb2428e2d</ns1:TokenGuid></ns2:credentials>
+            <ns2:aeroBookParams>
+                <ns3:CustomerFIO></ns3:CustomerFIO>
+                <ns3:Email>zhangdingji888@gmail.com</ns3:Email>
+                <ns3:Marker></ns3:Marker>
+                <ns3:OfferCode>H4sIAAAAAAAEAHN1MHQwAEM-P-c6J6-gOiMDIzNdI0tdA1MHXUMHZUVlZRhfwdDSysi0Bs41MrIyMa3Jy0uvKciuUFZTc0vMKU4FarAyNDSzMLGyMrAy0NPVA2KrADcrIwNvKysATIoUVG4AAAA-b</ns3:OfferCode>
+                <ns3:Partner></ns3:Partner>
+                <ns3:PaxList><ns1:PaxData><ns1:Age>27</ns1:Age><ns1:AgeType>Adult</ns1:AgeType><ns1:BirthDay>01.05.1999</ns1:BirthDay><ns1:BirthISO>ABH</ns1:BirthISO><ns1:BonusCard></ns1:BonusCard><ns1:Document>tianhuajie88</ns1:Document><ns1:GenderType>Male</ns1:GenderType><ns1:Name>zhang</ns1:Name><ns1:PassGuid>8F84101D-4F69-46BF-B6E7-CF8DCD59B3EC</ns1:PassGuid><ns1:Surname>dingji</ns1:Surname></ns1:PaxData></ns3:PaxList>
+                <ns3:Phone>13737123654</ns3:Phone>
+                <ns3:SearchGuid>3dd9a043-eb28-4b7e-872a-fb976b28cf70</ns3:SearchGuid>
+                
+                
+                
+                <ns3:Utm>device_id=1910100914333063380</ns3:Utm>
+            </ns2:aeroBookParams>
+        </ns2:AeroBook>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+--------------------------------------------------------
+
+Response
+HTTP/1.1 200
+Content-Length: 1280
+Content-Type: application/soap+xml; charset=utf-8
+Content-Encoding: gzip
+Server: Microsoft-HTTPAPI/2.0
+Date: Wed, 20 May 2026 09:41:29 GMT
+
+<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"><s:Body><AeroBookResponse xmlns="http://tempuri.org/"><AeroBookResult xmlns:a="http://schemas.datacontract.org/2004/07/SiteCity.Avia.Booking" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Currency xmlns="http://schemas.datacontract.org/2004/07/SiteCity.Common">CNY</Currency><ErrorCode xmlns="http://schemas.datacontract.org/2004/07/SiteCity.Common">-1</ErrorCode><ErrorString xmlns="http://schemas.datacontract.org/2004/07/SiteCity.Common"/><ServiceUrl xmlns="http://schemas.datacontract.org/2004/07/SiteCity.Common">net.tcp://10.10.1.135:687/City24Service1</ServiceUrl><Success xmlns="http://schemas.datacontract.org/2004/07/SiteCity.Common">true</Success><a:BookGuid>f6ee5985-7a06-4669-ad95-92fc9120e5a9</a:BookGuid><a:BookId>13418456</a:BookId><a:CardVariants xmlns:b="http://schemas.datacontract.org/2004/07/SiteCity.Common"><b:CardVariant><b:Code>CA</b:Code><b:Name>Mastercard</b:Name></b:CardVariant><b:CardVariant><b:Code>VI</b:Code><b:Name>Visa</b:Name></b:CardVariant></a:CardVariants><a:ConfirmableTo>20.05.2026 13:11:30</a:ConfirmableTo><a:ConfirmableToUser>20.05.2026 11:11:30 (GMT Standard Time)</a:ConfirmableToUser><a:ConfirmableToUtc>20.05.2026 10:11:30</a:ConfirmableToUtc><a:Offers xmlns:b="http://schemas.datacontract.org/2004/07/SiteCity.Avia.Common.Avia"><b:OfferInfo><b:PNR>GV6F4G</b:PNR><b:Rph>1</b:Rph><b:Segments><b:OfferSegment><b:AirCraft>Boeing 737</b:AirCraft><b:Arrival><b:City>Beijing</b:City><b:Date>29.05.2026 22:45</b:Date><b:Iata>PKX</b:Iata><b:Name>Beijing Daxing</b:Name><b:Terminal/></b:Arrival><b:Baggage><b:BaggageType>Kilos</b:BaggageType><b:Count>20</b:Count></b:Baggage><b:CabinBaggage><b:BaggageType>Kilos</b:BaggageType><b:Count>7</b:Count></b:CabinBaggage><b:Departure><b:City>Nanning</b:City><b:Date>29.05.2026 19:25</b:Date><b:Iata>NNG</b:Iata><b:Name>Nanning</b:Name><b:Terminal/></b:Departure><b:FlightClass>Econom</b:FlightClass><b:FlightMinutes>200</b:FlightMinutes><b:FlightNum>CZ-8992</b:FlightNum><b:FlightTime>03:20:00</b:FlightTime><b:MarketingAirline>CZ</b:MarketingAirline><b:MarketingAirlineName>China Southern</b:MarketingAirlineName><b:OperatingAirline>CZ</b:OperatingAirline><b:OperatingAirlineName>China Southern</b:OperatingAirlineName><b:ResBookDesigQuantity>4</b:ResBookDesigQuantity><b:Rph>1</b:Rph></b:OfferSegment></b:Segments><b:ValidatingAirline>CZ</b:ValidatingAirline><b:ValidatingAirlineName>China Southern</b:ValidatingAirlineName></b:OfferInfo></a:Offers><a:PaxList xmlns:b="http://schemas.datacontract.org/2004/07/SiteCity.Common"><b:PaxData><b:Age>27</b:Age><b:AgeType>Adult</b:AgeType><b:BirthCity/><b:BirthDay>01.05.1999</b:BirthDay><b:BirthISO>ABH</b:BirthISO><b:BookStatus>Unknown</b:BookStatus><b:Document>tianhuajie88</b:Document><b:DocumentExDate/><b:DocumentType i:nil="true"/><b:GenderType>Male</b:GenderType><b:MiddleName/><b:Name>Zhang</b:Name><b:PassGuid>8f84101d-4f69-46bf-b6e7-cf8dcd59b3ec</b:PassGuid><b:PassPartnerId i:nil="true"/><b:Surname>Dingji</b:Surname></b:PaxData></a:PaxList><a:PaymentPrices xmlns:b="http://schemas.datacontract.org/2004/07/SiteCity.Avia.Prebook"><b:PaymentPrice><b:PaymentSourceType>CreditCard</b:PaymentSourceType><b:Price>933.23</b:Price></b:PaymentPrice></a:PaymentPrices><a:PaymentRealPrices xmlns:b="http://schemas.datacontract.org/2004/07/SiteCity.Common"><b:Currency>0.174261</b:Currency><b:CurrencyCode>USD</b:CurrencyCode><b:PaymentPrices><b:PriceByPayment><b:PaymentSource>CreditCard</b:PaymentSource><b:Price><b:Currency>USD</b:Currency><b:Value>162.63</b:Value></b:Price></b:PriceByPayment></b:PaymentPrices></a:PaymentRealPrices><a:PaymentUrl/><a:SearchGuid>3dd9a043-eb28-4b7e-872a-fb976b28cf70</a:SearchGuid></AeroBookResult></AeroBookResponse></s:Body></s:Envelope>
