@@ -1,8 +1,0 @@
-uploads = []
-outputs = []
-
-[[generated]]
-id = "NKxtRlgysYyMsJV_y5pQk"
-uri = "file://artifacts/flight-search/public/hero.png"
-type = "image"
-title = "Minimalist sky above clouds"
