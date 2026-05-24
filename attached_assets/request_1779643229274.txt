@@ -1,0 +1,27 @@
+Request
+POST https://app.adjust.com/event HTTP/1.1
+Host: app.adjust.com
+Content-Type: application/x-www-form-urlencoded
+Connection: keep-alive
+Client-Sdk: ios4.29.7
+Accept: */*
+Accept-Language: zh-CN,zh-Hans;q=0.9
+Content-Length: 1021
+Accept-Encoding: gzip, deflate, br
+User-Agent: CityTravel/20220505124464 CFNetwork/3826.600.41.2.1 Darwin/24.6.0
+
+
+bundle_id=com.ct.CityTravel&primary_dedupe_token=efbc2f80-31df-4c29-a318-2526b5a943c7&app_version=20220505124464&installed_at=2026-05-13T18%3A39%3A31.526Z%2B0800&device_name=iPad11%2C1&app_version_short=3.9.633&needs_response_details=1&attribution_deeplink=1&skadn_registered_at=2026-05-15T17%3A02%3A35.688Z%2B0800&event_count=24&os_name=ios&session_count=12&session_length=231&partner_params=%7B%22ct_departure_date%22%3A%222026-06-01%22%2C%22ct_search_from%22%3A%22NNG%22%2C%22ct_return_date%22%3A%222026-06-05%22%2C%22ct_search_to%22%3A%22NNG%22%2C%22searchedString%22%3A%22NNGBJS2026-06-01BJSNNG2026-06-05100%22%7D&event_buffering_enabled=0&idfv=BE210D6C-9076-4C6C-BFB7-AE56E4F1E6E6&environment=production&app_token=dh8zmclk5kw0&os_version=18.7.8&fb_anon_id=XZA59E9930-0DB1-4274-8442-0C8F3E33F6AB&started_at=2026-05-24T00%3A54%3A38.000Z%2B0800&subsession_count=5&created_at=2026-05-25T00%3A56%3A30.378Z%2B0800&time_spent=203&device_type=iPad&event_token=si4zbq&att_status=0&sent_at=2026-05-25T00%3A56%3A30.393Z%2B0800
+--------------------------------------------------------
+
+Response
+HTTP/1.1 403
+content-type: application/json; charset=utf-8
+date: Sun, 24 May 2026 16:56:31 GMT
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+x-frame-options: SAMEORIGIN
+x-content-type-options: nosniff
+x-robots-tag: noindex
+Content-Length: 50
+
+{"error":"Event request failed (App is inactive)"}

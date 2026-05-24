@@ -23,9 +23,23 @@ export default function Home() {
   };
 
   const isLoading = outboundMutation.isPending || returnMutation.isPending;
+  function extractError(e: unknown): string {
+    if (!e) return "搜索出错";
+    if (typeof e === "object") {
+      const err = e as Record<string, unknown>;
+      // ApiError: .data contains the parsed JSON body { error: "..." }
+      if (err.data && typeof err.data === "object") {
+        const d = err.data as Record<string, unknown>;
+        if (typeof d.error === "string") return d.error;
+      }
+      if (typeof err.message === "string") return err.message;
+    }
+    return "搜索出错，请稍后重试";
+  }
+
   const error =
-    (outboundMutation.isError ? (outboundMutation.error as any)?.error || "搜索出错" : null) ||
-    (returnMutation.isError ? (returnMutation.error as any)?.error || "搜索出错" : null);
+    (outboundMutation.isError ? extractError(outboundMutation.error) : null) ||
+    (returnMutation.isError ? extractError(returnMutation.error) : null);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
