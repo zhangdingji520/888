@@ -12,80 +12,143 @@ export interface CityAirport {
 // ─── Static airport data ──────────────────────────────────────────────────────
 
 const DOMESTIC: CityAirport[] = [
+  // A
   { iata: "AKU", city: "阿克苏", name: "温宿机场", country: "中国" },
-  { iata: "AVA", city: "安顺", name: "黄果树机场", country: "中国" },
+  { iata: "AOG", city: "鞍山", name: "腾鳌机场", country: "中国" },
   { iata: "AQG", city: "安庆", name: "天柱山机场", country: "中国" },
+  { iata: "AVA", city: "安顺", name: "黄果树机场", country: "中国" },
+  // B
+  { iata: "BFJ", city: "毕节", name: "飞雄机场", country: "中国" },
   { iata: "BHY", city: "北海", name: "福成机场", country: "中国" },
-  { iata: "BSD", city: "保山", name: "保山机场", country: "中国" },
   { iata: "BJS", city: "北京", name: "北京(全城)", country: "中国" },
+  { iata: "BPE", city: "朝阳", name: "朝阳机场", country: "中国" },
+  { iata: "BSD", city: "保山", name: "保山机场", country: "中国" },
+  // C
   { iata: "CAN", city: "广州", name: "白云国际机场", country: "中国" },
   { iata: "CGO", city: "郑州", name: "新郑国际机场", country: "中国" },
   { iata: "CGQ", city: "长春", name: "龙嘉国际机场", country: "中国" },
+  { iata: "CIF", city: "赤峰", name: "玉龙机场", country: "中国" },
   { iata: "CIH", city: "长治", name: "王村机场", country: "中国" },
   { iata: "CKG", city: "重庆", name: "江北国际机场", country: "中国" },
   { iata: "CSX", city: "长沙", name: "黄花国际机场", country: "中国" },
   { iata: "CTU", city: "成都", name: "双流国际机场", country: "中国" },
+  // D
   { iata: "DAT", city: "大同", name: "云冈机场", country: "中国" },
+  { iata: "DCY", city: "稻城", name: "亚丁机场", country: "中国" },
   { iata: "DLC", city: "大连", name: "周水子国际机场", country: "中国" },
-  { iata: "DNH", city: "敦煌", name: "敦煌机场", country: "中国" },
+  { iata: "DNH", city: "敦煌", name: "莫高机场", country: "中国" },
   { iata: "DQA", city: "大庆", name: "萨尔图机场", country: "中国" },
   { iata: "DSN", city: "鄂尔多斯", name: "伊金霍洛机场", country: "中国" },
+  { iata: "DYG", city: "张家界", name: "荷花机场", country: "中国" },
+  // E
+  { iata: "ENH", city: "恩施", name: "许家坪机场", country: "中国" },
+  { iata: "ERL", city: "二连浩特", name: "赛乌苏机场", country: "中国" },
+  // F
   { iata: "FOC", city: "福州", name: "长乐国际机场", country: "中国" },
   { iata: "FUO", city: "佛山", name: "沙堤机场", country: "中国" },
+  // G
+  { iata: "GHN", city: "广汉", name: "广汉机场", country: "中国" },
+  { iata: "GYS", city: "广元", name: "盘龙机场", country: "中国" },
   { iata: "GYU", city: "固原", name: "六盘山机场", country: "中国" },
+  // H
   { iata: "HAK", city: "海口", name: "美兰国际机场", country: "中国" },
   { iata: "HET", city: "呼和浩特", name: "白塔国际机场", country: "中国" },
   { iata: "HGH", city: "杭州", name: "萧山国际机场", country: "中国" },
+  { iata: "HIA", city: "淮安", name: "涟水机场", country: "中国" },
+  { iata: "HJJ", city: "怀化", name: "芷江机场", country: "中国" },
   { iata: "HLD", city: "海拉尔", name: "东山机场", country: "中国" },
+  { iata: "HNY", city: "衡阳", name: "南岳机场", country: "中国" },
   { iata: "HRB", city: "哈尔滨", name: "太平国际机场", country: "中国" },
+  { iata: "HSN", city: "舟山", name: "普陀山机场", country: "中国" },
+  { iata: "HTN", city: "和田", name: "和田机场", country: "中国" },
   { iata: "HYN", city: "台州", name: "路桥机场", country: "中国" },
+  // J
+  { iata: "JDZ", city: "景德镇", name: "罗家机场", country: "中国" },
   { iata: "JHG", city: "西双版纳", name: "嘎洒国际机场", country: "中国" },
+  { iata: "JIL", city: "吉林", name: "二台子机场", country: "中国" },
   { iata: "JJN", city: "泉州", name: "晋江机场", country: "中国" },
   { iata: "JMU", city: "佳木斯", name: "佳木斯机场", country: "中国" },
   { iata: "JNG", city: "济宁", name: "曲阜机场", country: "中国" },
+  { iata: "JNZ", city: "锦州", name: "小岭子机场", country: "中国" },
+  // K
   { iata: "KHN", city: "南昌", name: "昌北国际机场", country: "中国" },
   { iata: "KMG", city: "昆明", name: "长水国际机场", country: "中国" },
   { iata: "KOW", city: "赣州", name: "黄金机场", country: "中国" },
+  { iata: "KRL", city: "库尔勒", name: "库尔勒机场", country: "中国" },
+  { iata: "KRY", city: "克拉玛依", name: "克拉玛依机场", country: "中国" },
   { iata: "KWE", city: "贵阳", name: "龙洞堡国际机场", country: "中国" },
   { iata: "KWL", city: "桂林", name: "两江国际机场", country: "中国" },
+  // L
   { iata: "LHW", city: "兰州", name: "中川国际机场", country: "中国" },
   { iata: "LJG", city: "丽江", name: "三义机场", country: "中国" },
   { iata: "LLF", city: "永州", name: "零陵机场", country: "中国" },
+  { iata: "LNJ", city: "临沧", name: "临沧机场", country: "中国" },
+  { iata: "LUM", city: "芒市", name: "芒市机场", country: "中国" },
   { iata: "LXA", city: "拉萨", name: "贡嘎机场", country: "中国" },
   { iata: "LYA", city: "洛阳", name: "北郊机场", country: "中国" },
   { iata: "LYG", city: "连云港", name: "白塔埠机场", country: "中国" },
   { iata: "LZH", city: "柳州", name: "白莲机场", country: "中国" },
+  { iata: "LZO", city: "泸州", name: "云龙机场", country: "中国" },
+  // M
   { iata: "MDG", city: "牡丹江", name: "海浪机场", country: "中国" },
   { iata: "MIG", city: "绵阳", name: "南郊机场", country: "中国" },
+  { iata: "MXZ", city: "梅州", name: "梅县机场", country: "中国" },
+  // N
   { iata: "NKG", city: "南京", name: "禄口国际机场", country: "中国" },
+  { iata: "NLH", city: "宁蒗", name: "泸沽湖机场", country: "中国" },
   { iata: "NNG", city: "南宁", name: "吴圩国际机场", country: "中国" },
   { iata: "NTG", city: "南通", name: "兴东机场", country: "中国" },
+  { iata: "NZH", city: "满洲里", name: "西郊机场", country: "中国" },
+  // P
   { iata: "PEK", city: "北京", name: "首都国际机场", country: "中国" },
   { iata: "PKX", city: "北京", name: "大兴国际机场", country: "中国" },
   { iata: "PVG", city: "上海", name: "浦东国际机场", country: "中国" },
+  // Q
+  { iata: "RIZ", city: "日照", name: "日照机场", country: "中国" },
+  // S
   { iata: "SHA", city: "上海", name: "虹桥国际机场", country: "中国" },
   { iata: "SHE", city: "沈阳", name: "桃仙国际机场", country: "中国" },
   { iata: "SJW", city: "石家庄", name: "正定国际机场", country: "中国" },
+  { iata: "SYM", city: "普洱", name: "思茅机场", country: "中国" },
   { iata: "SYX", city: "三亚", name: "凤凰国际机场", country: "中国" },
   { iata: "SZX", city: "深圳", name: "宝安国际机场", country: "中国" },
+  // T
   { iata: "TAO", city: "青岛", name: "胶东国际机场", country: "中国" },
+  { iata: "TCG", city: "塔城", name: "塔城机场", country: "中国" },
   { iata: "TFU", city: "成都", name: "天府国际机场", country: "中国" },
+  { iata: "TGO", city: "通辽", name: "通辽机场", country: "中国" },
   { iata: "TNA", city: "济南", name: "遥墙国际机场", country: "中国" },
   { iata: "TSN", city: "天津", name: "滨海国际机场", country: "中国" },
+  { iata: "TVS", city: "唐山", name: "三女河机场", country: "中国" },
   { iata: "TXN", city: "黄山", name: "屯溪机场", country: "中国" },
+  // U
   { iata: "URC", city: "乌鲁木齐", name: "地窝堡国际机场", country: "中国" },
+  // W
+  { iata: "WDS", city: "十堰", name: "武当山机场", country: "中国" },
   { iata: "WEF", city: "潍坊", name: "南苑机场", country: "中国" },
   { iata: "WUH", city: "武汉", name: "天河国际机场", country: "中国" },
+  { iata: "WUS", city: "武夷山", name: "武夷山机场", country: "中国" },
   { iata: "WUX", city: "无锡", name: "硕放国际机场", country: "中国" },
+  { iata: "WXN", city: "万州", name: "五桥机场", country: "中国" },
+  // X
+  { iata: "XFN", city: "襄阳", name: "刘集机场", country: "中国" },
+  { iata: "XIL", city: "锡林浩特", name: "锡林浩特机场", country: "中国" },
   { iata: "XIY", city: "西安", name: "咸阳国际机场", country: "中国" },
   { iata: "XMN", city: "厦门", name: "高崎国际机场", country: "中国" },
   { iata: "XNN", city: "西宁", name: "曹家堡机场", country: "中国" },
   { iata: "XUZ", city: "徐州", name: "观音机场", country: "中国" },
+  // Y
   { iata: "YBP", city: "宜宾", name: "五粮液机场", country: "中国" },
+  { iata: "YCU", city: "运城", name: "张孝机场", country: "中国" },
   { iata: "YIH", city: "宜昌", name: "三峡机场", country: "中国" },
+  { iata: "YIW", city: "义乌", name: "义乌机场", country: "中国" },
   { iata: "YNJ", city: "延吉", name: "朝阳川机场", country: "中国" },
   { iata: "YNT", city: "烟台", name: "蓬莱机场", country: "中国" },
+  { iata: "YNZ", city: "盐城", name: "南洋机场", country: "中国" },
+  // Z
+  { iata: "ZAT", city: "昭通", name: "昭通机场", country: "中国" },
   { iata: "ZHA", city: "湛江", name: "吴川机场", country: "中国" },
+  { iata: "ZHY", city: "中卫", name: "香山机场", country: "中国" },
   { iata: "ZUH", city: "珠海", name: "金湾机场", country: "中国" },
   { iata: "ZYI", city: "遵义", name: "新舟机场", country: "中国" },
 ];
@@ -276,7 +339,7 @@ export function CitySelector({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-background">
+    <div className="fixed inset-0 z-[200] flex flex-col bg-background">
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="bg-primary text-primary-foreground shrink-0">
         <div className="flex items-center gap-2 px-3 py-2">
