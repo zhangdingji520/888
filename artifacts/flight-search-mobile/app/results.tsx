@@ -32,7 +32,13 @@ function parseDate(raw: string): string {
   return "";
 }
 
-function FlightCard({ offer, colors }: { offer: FlightOffer; colors: ReturnType<typeof useColors> }) {
+function FlightCard({ offer, colors, onSelect, flightClass, adults }: {
+  offer: FlightOffer;
+  colors: ReturnType<typeof useColors>;
+  onSelect: (offer: FlightOffer) => void;
+  flightClass: string;
+  adults: number;
+}) {
   const main = offer.segments[0];
   const last = offer.segments[offer.segments.length - 1];
   const isOvernight = main.departureTime.slice(0, 10) !== last.arrivalTime.slice(0, 10);
@@ -182,7 +188,7 @@ function FlightCard({ offer, colors }: { offer: FlightOffer; colors: ReturnType<
             <Text style={s.baggageText}>{offer.baggage}</Text>
           </View>
         ) : <View />}
-        <Pressable style={s.selectBtn}>
+        <Pressable style={s.selectBtn} onPress={() => onSelect(offer)}>
           <Text style={s.selectText}>选择</Text>
         </Pressable>
       </View>
@@ -194,10 +200,16 @@ function ResultSection({
   label,
   result,
   colors,
+  onSelect,
+  flightClass,
+  adults,
 }: {
   label: string;
   result: FlightSearchResult;
   colors: ReturnType<typeof useColors>;
+  onSelect: (offer: FlightOffer) => void;
+  flightClass: string;
+  adults: number;
 }) {
   const s = StyleSheet.create({
     label: {
@@ -224,7 +236,14 @@ function ResultSection({
         </View>
       ) : (
         result.offers.map((offer) => (
-          <FlightCard key={offer.id} offer={offer} colors={colors} />
+          <FlightCard
+            key={offer.id}
+            offer={offer}
+            colors={colors}
+            onSelect={onSelect}
+            flightClass={flightClass}
+            adults={adults}
+          />
         ))
       )}
     </View>
@@ -272,6 +291,21 @@ export default function ResultsScreen() {
   const isLoading = outbound.isPending || (params.tripType === "roundtrip" && returnFlight.isPending);
   const errorMsg = (outbound.error as Error | null)?.message ?? null;
 
+  const CLASS_LABELS: Record<string, string> = { Econom: "经济舱", Business: "商务舱", First: "头等舱" };
+  const adultsCount = parseInt(params.adults ?? "1", 10);
+
+  function handleSelectFlight(offer: FlightOffer, label: string) {
+    router.push({
+      pathname: "/booking",
+      params: {
+        offerJson: JSON.stringify(offer),
+        flightClass: params.flightClass ?? "Econom",
+        adults: params.adults ?? "1",
+        label,
+      },
+    });
+  }
+
   const s = StyleSheet.create({
     root: { flex: 1, backgroundColor: colors.background },
     header: {
@@ -315,10 +349,8 @@ export default function ResultsScreen() {
     retryText: { color: "#fff", fontWeight: "700" as const, fontFamily: "PlusJakartaSans_700Bold" },
     divider: { height: 1, backgroundColor: colors.border, marginHorizontal: 16, marginVertical: 12 },
     bottomPad: { height: Platform.OS === "web" ? 34 : insets.bottom + 16 },
-    CLASS_LABELS: {},
   });
 
-  const CLASS_LABELS: Record<string, string> = { Econom: "经济舱", Business: "商务舱", First: "头等舱" };
   const classSub = `${params.adults}人 · ${CLASS_LABELS[params.flightClass ?? "Econom"] ?? "经济舱"}`;
 
   return (
@@ -380,12 +412,22 @@ export default function ResultsScreen() {
                   label={params.tripType === "roundtrip" ? "去程航班" : "可选航班"}
                   result={outbound.data}
                   colors={colors}
+                  onSelect={(offer) => handleSelectFlight(offer, params.tripType === "roundtrip" ? "去程航班" : "航班详情")}
+                  flightClass={params.flightClass ?? "Econom"}
+                  adults={adultsCount}
                 />
               )}
               {params.tripType === "roundtrip" && returnFlight.data && (
                 <>
                   <View style={s.divider} />
-                  <ResultSection label="返程航班" result={returnFlight.data} colors={colors} />
+                  <ResultSection
+                    label="返程航班"
+                    result={returnFlight.data}
+                    colors={colors}
+                    onSelect={(offer) => handleSelectFlight(offer, "返程航班")}
+                    flightClass={params.flightClass ?? "Econom"}
+                    adults={adultsCount}
+                  />
                 </>
               )}
               <View style={s.bottomPad} />
