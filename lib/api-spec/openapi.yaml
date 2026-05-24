@@ -3,17 +3,13 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: Flight search API backed by city.travel SOAP service
+  description: API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
-  - name: flights
-    description: Flight search operations
-  - name: airports
-    description: Airport lookup operations
 paths:
   /healthz:
     get:
@@ -28,77 +24,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
-
-  /flights/search:
-    post:
-      operationId: searchFlights
-      tags: [flights]
-      summary: Search for flights
-      description: Search for available flights between two airports
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/FlightSearchInput"
-      responses:
-        "200":
-          description: Search results
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FlightSearchResult"
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "502":
-          description: Upstream SOAP service error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /airports/popular:
-    get:
-      operationId: getPopularAirports
-      tags: [airports]
-      summary: Get list of popular airports
-      description: Returns a curated list of popular airports for quick selection
-      responses:
-        "200":
-          description: List of popular airports
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Airport"
-
-  /airports/search:
-    get:
-      operationId: searchAirports
-      tags: [airports]
-      summary: Search airports by name or IATA code
-      parameters:
-        - name: q
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Search query (city name, airport name, or IATA code)
-      responses:
-        "200":
-          description: Matching airports
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Airport"
-
 components:
   schemas:
     HealthStatus:
@@ -109,111 +34,3 @@ components:
       required:
         - status
 
-    ErrorResponse:
-      type: object
-      required: [error]
-      properties:
-        error:
-          type: string
-
-    Airport:
-      type: object
-      required: [iata, city, name, country]
-      properties:
-        iata:
-          type: string
-          description: IATA airport code (e.g. PEK, SHA)
-        city:
-          type: string
-          description: City name
-        name:
-          type: string
-          description: Airport name
-        country:
-          type: string
-          description: Country name
-
-    FlightSearchInput:
-      type: object
-      required: [origin, destination, date, adults]
-      properties:
-        origin:
-          type: string
-          description: Origin IATA code
-        destination:
-          type: string
-          description: Destination IATA code
-        date:
-          type: string
-          description: Departure date in DD.MM.YYYY format
-        adults:
-          type: integer
-          description: Number of adult passengers
-          minimum: 1
-        children:
-          type: integer
-          description: Number of child passengers
-          minimum: 0
-        infants:
-          type: integer
-          description: Number of infant passengers
-          minimum: 0
-        flightClass:
-          type: string
-          enum: [Econom, Business, First]
-          description: Cabin class
-
-    FlightSegment:
-      type: object
-      required: [departureAirport, arrivalAirport, departureTime, arrivalTime, airline, flightNumber, duration]
-      properties:
-        departureAirport:
-          type: string
-        arrivalAirport:
-          type: string
-        departureTime:
-          type: string
-        arrivalTime:
-          type: string
-        airline:
-          type: string
-        flightNumber:
-          type: string
-        duration:
-          type: string
-
-    FlightOffer:
-      type: object
-      required: [id, price, currency, segments, stops, totalDuration]
-      properties:
-        id:
-          type: string
-        price:
-          type: number
-        currency:
-          type: string
-        segments:
-          type: array
-          items:
-            $ref: "#/components/schemas/FlightSegment"
-        stops:
-          type: integer
-        totalDuration:
-          type: string
-        airline:
-          type: string
-        baggage:
-          type: ["string", "null"]
-
-    FlightSearchResult:
-      type: object
-      required: [offers, searchId]
-      properties:
-        searchId:
-          type: string
-        offers:
-          type: array
-          items:
-            $ref: "#/components/schemas/FlightOffer"
-        totalCount:
-          type: integer
