@@ -3,13 +3,12 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter @workspace/flight-search run build",
   "outputDirectory": "artifacts/flight-search/dist/public",
-{
   "functions": {
-    "api/*.php": {
-      "runtime": "@vercel/php@4.0.0"
+    "api/index.ts": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30
     }
-  }
-}
+  },
   "env": {
     "NODE_ENV": "production"
   },
